@@ -6,6 +6,7 @@ from rich.traceback import install
 install()
 from rich.console import Console
 console = Console()
+from rich.table import Table
 
 def sizeof_fmt(num, suffix='B'):
     """Convert bytes into human-readable size. Copied from stack overflow."""
@@ -28,6 +29,9 @@ def clean_dtypes(dtype):
 
 class Validator:
     """Validates CSV"""
+    X = '[red]✗[/red]'
+    CHECK = '[green]✔[/green]'
+
     def __init__(self, path):
         self.path = path
         self.filename = path.split('/')[-1]
@@ -47,8 +51,28 @@ class Validator:
         bite_size = os.path.getsize(self.path)
         console.print(f'   File size: {sizeof_fmt(bite_size)}', style="green")
 
+        self.print_columns()
+        
+
+    def print_columns(self):
+        df = self.df
+        table = Table(title="COLUMNS")
+
+        table.add_column("Name", justify="right", style="cyan", no_wrap=True)
+        table.add_column("Data Type", style="magenta")
+        table.add_column("Is Unique", justify="right", style="green")
+        table.add_column("Empty Cell Count", justify="right", style="green")
+
         for col, dtype in df.dtypes.iteritems():
-            print(col, clean_dtypes(dtype))
+            empty_count = str(df[col].isnull().sum())
+            table.add_row(
+                col, # column name
+                clean_dtypes(dtype), # data type, turned into human-readable format
+                self.CHECK if df[col].is_unique else self.X,
+                f'[green]{empty_count}[/green]' if empty_count == '0' else f'[yellow]{empty_count}[/yellow]'
+            )
+        
+        console.print(table)
 
     # def validate(self):
     #     print_file()
