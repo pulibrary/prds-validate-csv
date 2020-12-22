@@ -26,11 +26,17 @@ def clean_dtypes(dtype):
     else:
         return dtype.name
 
+def warning(s):
+    return f'[yellow]{s}[/yellow]'
+
+def ok(s):
+    return f'[green]{s}[/green]'
+
+def error(s):
+    return f'[red]{s}[/red]'
+
 class Validator:
     """Validates CSV"""
-    X = '[red]✗[/red]'
-    CHECK = '[green]✔[/green]'
-
     def __init__(self, path):
         self.path = path
         self.filename = path.split('/')[-1]
@@ -68,16 +74,46 @@ class Validator:
             table.add_row(
                 col, # column name
                 clean_dtypes(dtype), # data type, turned into human-readable format
-                self.CHECK if df[col].is_unique else self.X,
-                f'[green]{empty_count}[/green]' if empty_count == '0' else f'[yellow]{empty_count}[/yellow]'
+                ok('✔') if df[col].is_unique else error('✗'),
+                ok(empty_count) if empty_count == '0' else warning(empty_count)
             )
         
         console.print(table)
 
-    # def validate(self):
-    #     print_file()
+        # go through validation tests
+        console.print('VALIDATION TESTS', style="green bold")
+        if self.column_names_unique:
+            console.print(ok('   ✔ Column names unique'))
+        else:
+            console.print(error('   ✗ Column names are not unique'))
+
+        if self.rows_unique:
+            console.print(ok('   ✔ Rows unique'))
+        else:
+            console.print(error('   ✗ Rows are not unique'))
+
+        if self.column_names_not_null:
+            console.print(ok('   ✔ No column names are null'))
+        else:
+            console.print(error('    ✗ Some column names are null'))
+
+    def validate(self):
+        self.column_names_unique = self.check_column_names_unique()
+        self.rows_unique = self.check_rows_unique()
+        self.column_names_not_null = self.check_column_names_not_null()
+
+    def check_column_names_not_null(self):
+        return True
+
+    def check_column_names_unique(self):
+        return True
+
+    def check_rows_unique(self):
+        return True
+
 
 if __name__ == '__main__':
     validator = Validator('fixtures/propublica.csv')
+    validator.validate()
     validator.print()
         
