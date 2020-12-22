@@ -58,10 +58,10 @@ class Validator:
         # print columns info
         table = Table(title="COLUMNS")
 
-        table.add_column("Name", justify="right", style="cyan", no_wrap=True)
+        table.add_column("Name", style="cyan", no_wrap=True)
         table.add_column("Data Type", style="magenta")
-        table.add_column("Is Unique", justify="right", style="green")
-        table.add_column("Empty Cell Count", justify="right", style="green")
+        table.add_column("Is Unique", justify="center", style="green")
+        table.add_column("Empty Cell Count", style="green")
 
         for col, dtype in df.dtypes.iteritems():
             empty_count = str(df[col].isnull().sum())
