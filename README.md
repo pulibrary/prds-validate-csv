@@ -4,6 +4,8 @@
 
 A simple collection of CSV/TSV tests for the Princeton Research Data Service to run on Research Computing clusters before migrating data to the library's data repository infrastructure.
 
+![example](example.png)
+
 ## Setup
 
 ```bash
