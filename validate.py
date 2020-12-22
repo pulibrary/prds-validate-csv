@@ -5,7 +5,6 @@ import pandas as pd
 from rich.traceback import install
 install()
 from rich.console import Console
-console = Console()
 from rich.table import Table
 
 def sizeof_fmt(num, suffix='B'):
@@ -35,27 +34,28 @@ class Validator:
     def __init__(self, path):
         self.path = path
         self.filename = path.split('/')[-1]
+        self.bite_size = os.path.getsize(self.path)
 
         # get delimiter
         filetype = self.filename.split('.')[-1]
         assert filetype in ['tsv', 'csv'], OSError(f'{filename} is not a csv or tsv')
         self.delimiter = '\t' if filetype == 'tsv' else ','
 
+        self.df = pd.read_csv(path)
+
+    
+    def print(self):
+        console = Console()
+
+        # print file info
         console.print(self.filename, style="green bold")
+        console.print(f'   File size: {sizeof_fmt(self.bite_size)}', style="green")
 
-        # output dataframe info
-        df = pd.read_csv(path)
-        self.df = df
-        console.print(f'   Rows: {df.shape[0]},  Columns: {df.shape[1]}', style="green")
-
-        bite_size = os.path.getsize(self.path)
-        console.print(f'   File size: {sizeof_fmt(bite_size)}', style="green")
-
-        self.print_columns()
-        
-
-    def print_columns(self):
+        # print table info
         df = self.df
+        console.print(f'   Rows: {df.shape[0]},  Columns: {df.shape[1]}', style="green")
+        
+        # print columns info
         table = Table(title="COLUMNS")
 
         table.add_column("Name", justify="right", style="cyan", no_wrap=True)
@@ -79,5 +79,5 @@ class Validator:
 
 if __name__ == '__main__':
     validator = Validator('fixtures/propublica.csv')
-    # validator.validate()
+    validator.print()
         
