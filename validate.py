@@ -6,6 +6,7 @@ from rich.traceback import install
 install()
 from rich.console import Console
 from rich.table import Table
+from rich.panel import Panel
 
 def sizeof_fmt(num, suffix='B'):
     """Convert bytes into human-readable size. Copied from stack overflow."""
@@ -52,17 +53,19 @@ class Validator:
     
     def print(self):
         console = Console()
+        df = self.df
 
         # print file info
-        console.print(self.filename, style="green bold")
+        console.print(Panel(self.filename, style="green bold"), justify="center")
+        console.print()
+        console.print('FILE INFO', style="green bold")
         console.print(f'   File size: {sizeof_fmt(self.bite_size)}', style="green")
-
-        # print table info
-        df = self.df
         console.print(f'   Rows: {df.shape[0]},  Columns: {df.shape[1]}', style="green")
         
         # print columns info
-        table = Table(title="COLUMNS")
+        console.print()
+        console.print('COLUMN INFO', style="green bold")
+        table = Table()
 
         table.add_column("Name", style="cyan", no_wrap=True)
         table.add_column("Data Type", style="magenta")
@@ -70,17 +73,18 @@ class Validator:
         table.add_column("Empty Cell Count", style="green")
 
         for col, dtype in df.dtypes.iteritems():
-            empty_count = str(df[col].isnull().sum())
+            empty_count = df[col].isnull().sum()
             table.add_row(
                 col, # column name
                 clean_dtypes(dtype), # data type, turned into human-readable format
                 ok('✔') if df[col].is_unique else error('✗'),
-                ok(empty_count) if empty_count == '0' else warning(empty_count)
+                ok(empty_count) if empty_count == 0 else warning(empty_count)
             )
         
         console.print(table)
 
         # go through validation tests
+        console.print()
         console.print('VALIDATION TESTS', style="green bold")
         if self.column_names_unique:
             console.print(ok('   ✔ Column names unique'))
@@ -96,6 +100,8 @@ class Validator:
             console.print(ok('   ✔ No column names are null'))
         else:
             console.print(error('    ✗ Some column names are null'))
+
+        console.print()
 
     def validate(self):
         self.column_names_unique = self.check_column_names_unique()
