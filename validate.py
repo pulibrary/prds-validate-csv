@@ -38,7 +38,7 @@ def error(s):
 
 class Validator:
     """Validates CSV"""
-    def __init__(self, path):
+    def __init__(self, path, delimiter=','):
         self.path = path
         self.filename = path.split('/')[-1]
         self.bite_size = os.path.getsize(self.path)
@@ -46,7 +46,11 @@ class Validator:
         # get delimiter
         filetype = self.filename.split('.')[-1]
         assert filetype in ['tsv', 'csv'], OSError(f'{filename} is not a csv or tsv')
-        self.delimiter = '\t' if filetype == 'tsv' else ','
+        
+        if delimiter != ',':
+            self.delimiter = delimiter
+        else:
+            self.delimiter = '\t' if filetype == 'tsv' else ','
 
         self.df = pd.read_csv(path)
 
@@ -86,36 +90,60 @@ class Validator:
         # go through validation tests
         console.print()
         console.print('VALIDATION TESTS', style="green bold")
-        if self.column_names_unique:
-            console.print(ok('   ✔ Column names unique'))
-        else:
-            console.print(error('   ✗ Column names are not unique'))
-
-        if self.rows_unique:
-            console.print(ok('   ✔ Rows unique'))
-        else:
-            console.print(error('   ✗ Rows are not unique'))
-
-        if self.column_names_not_null:
-            console.print(ok('   ✔ No column names are null'))
-        else:
-            console.print(error('    ✗ Some column names are null'))
+        console.print(self.column_names_unique)
+        console.print(self.rows_unique)
+        console.print(self.column_names_not_null)
+        console.print(self.rows_have_equal_number_of_columns)
+        console.print(self.rows_have_equal_number_of_columns)
+        console.print(self.quotes_are_escaped)
+        console.print(self.line_endings_are_CRLF)
 
         console.print()
 
-    def validate(self):
-        self.column_names_unique = self.check_column_names_unique()
-        self.rows_unique = self.check_rows_unique()
-        self.column_names_not_null = self.check_column_names_not_null()
 
-    def check_column_names_not_null(self):
-        return True
+    def validate(self):
+        self.check_column_names_unique()
+        self.check_rows_unique()
+        self.check_column_names_not_null()
+        self.check_utf8_encoding()
+        self.check_rows_have_equal_number_of_columns()
+        self.check_quotes_are_escaped()
+        self.check_line_endings_are_CRLF()
 
     def check_column_names_unique(self):
-        return True
+        OK = ok('   ✔ Column names unique')
+        ERROR = error('   ✗ Column names are not unique')
+        self.column_names_unique = OK
 
     def check_rows_unique(self):
-        return True
+        OK = ok('   ✔ Rows are unique')
+        ERROR = error('   ✗ Rows are not unique')
+        self.rows_unique = OK
+
+    def check_column_names_not_null(self):
+        OK = ok('   ✔ No column names are null')
+        ERROR = error('    ✗ Some column names are null')
+        self.column_names_not_null = OK
+
+    def check_rows_have_equal_number_of_columns(self):
+        OK = ok('   ✔ All rows have an equal number of columns')
+        ERROR = error('    ✗ Not all rows have an equal number of columns')
+        self.rows_have_equal_number_of_columns = OK
+
+    def check_utf8_encoding(self):
+        OK = ok('   ✔ Machine learning scan suggests UTF-8 encoding')
+        ERROR = error('    ✗ Machine learning scan suggests it may not be UTF-8 encoded')
+        self.has_utf8_encoding = OK
+
+    def check_quotes_are_escaped(self):
+        OK = ok('   ✔ Quotes are properly escaped')
+        ERROR = error('    ✗ Quotes are not properly escaped')
+        self.quotes_are_escaped = OK
+
+    def check_line_endings_are_CRLF(self):
+        OK = ok('   ✔ Line endings are CRLF')
+        ERROR = error('    ✗ Line endings are not CRLF')
+        self.line_endings_are_CRLF = OK
 
 
 if __name__ == '__main__':

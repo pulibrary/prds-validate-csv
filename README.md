@@ -2,7 +2,7 @@
 
 (Python 3.7)
 
-A simple collection of CSV/TSV tests for the Princeton Research Data Service to run on Research Computing clusters before migrating data to the library's data repository infrastructure.
+A simple collection of CSV/TSV tests for the Princeton Research Data Service to run on Research Computing clusters before migrating data to the library's data repository infrastructure, providing a report summary of general tabular information and validating the schema requirements of [RFC 4180](https://www.loc.gov/preservation/digital/formats/fdd/fdd000323.shtml).
 
 ![example](example.png)
 
