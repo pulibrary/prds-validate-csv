@@ -137,7 +137,8 @@ class Validator:
     def check_column_names_not_null(self):
         OK = ok('   ✔ No column names are null')
         ERROR = error('    ✗ Some column names are null')
-        self.column_names_not_null = OK
+        v = gt_validate(self.path, checks=['blank-header'])
+        self.column_names_not_null = OK if v['valid'] else ERROR
 
     def check_has_utf8_encoding(self):
         OK = ok('   ✔ No UTF-8 encoding errors')

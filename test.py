@@ -40,3 +40,12 @@ def test_check_rows_unique():
     validator = Validator(FIXTURE_DUPLICATE_ROWS)
     validator.check_rows_unique()
     assert '✗' in validator.rows_unique
+
+def test_check_column_names_not_null():
+    validator = Validator(FIXTURE_CSV)
+    validator.check_column_names_not_null()
+    assert '✔' in validator.column_names_not_null
+
+    validator = Validator(FIXTURE_NULL_COLUMN_NAME)
+    validator.check_column_names_not_null()
+    assert '✗' in validator.column_names_not_null
