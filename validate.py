@@ -46,7 +46,7 @@ class Validator:
 
         # get delimiter
         filetype = self.filename.split('.')[-1]
-        assert filetype in ['tsv', 'csv'], OSError(f'{filename} is not a csv or tsv')
+        assert filetype in ['tsv', 'csv'], f'{self.filename} is not a csv or tsv'
         
         if delimiter != ',':
             self.delimiter = delimiter

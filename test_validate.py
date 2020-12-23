@@ -11,13 +11,13 @@ FIXTURE_NON_UTF8 = 'fixtures/non-utf8-encoding.csv'
 
 def test_wrong_files():
     """Throws an error if the wrong file is being validated"""
-    # Validator(FIXTURE_TEXT)
-    pass
+    with pytest.raises(AssertionError) as excinfo:
+        Validator(FIXTURE_TEXT)
+    assert 'is not a csv' in str(excinfo.value)
 
 def test_can_read_csvs():
     """Can ingest CSVs"""
-    # Validator(FIXTURE_CSV)
-    pass
+    Validator(FIXTURE_CSV)
 
 def test_can_read_tsvs():
     """Can ingest TSVs"""
