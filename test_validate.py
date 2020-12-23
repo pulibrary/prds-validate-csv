@@ -21,8 +21,7 @@ def test_can_read_csvs():
 
 def test_can_read_tsvs():
     """Can ingest TSVs"""
-    # Validator(FIXTURE_TSV)
-    pass
+    Validator(FIXTURE_TSV)
 
 def test_check_column_names_unique():
     validator = Validator(FIXTURE_CSV)
