@@ -51,9 +51,6 @@ class Validator:
             self.delimiter = delimiter
         else:
             self.delimiter = '\t' if filetype == 'tsv' else ','
-
-        self.df = pd.read_csv(path)
-
     
     def print(self):
         console = Console()
@@ -90,6 +87,7 @@ class Validator:
         # go through validation tests
         console.print()
         console.print('VALIDATION TESTS', style="green bold")
+        console.print(self.parsable_by_pandas)
         console.print(self.column_names_unique)
         console.print(self.rows_unique)
         console.print(self.column_names_not_null)
@@ -102,6 +100,7 @@ class Validator:
 
 
     def validate(self):
+        self.check_parsable_by_pandas()
         self.check_column_names_unique()
         self.check_rows_unique()
         self.check_column_names_not_null()
@@ -110,8 +109,20 @@ class Validator:
         self.check_quotes_are_escaped()
         self.check_line_endings_are_CRLF()
 
+    def check_parsable_by_pandas(self):
+        OK = ok('   ✔ Parsable by pandas')
+        ERROR = error('   ✗ Parsable by pandas')
+
+        try:
+            self.df = pd.read_csv(self.path)
+            self.parsable_by_pandas = OK
+        except:
+            self.df = None
+            self.parsable_by_pandas = ERROR
+
+
     def check_column_names_unique(self):
-        OK = ok('   ✔ Column names unique')
+        OK = ok('   ✔ Column names are unique')
         ERROR = error('   ✗ Column names are not unique')
         self.column_names_unique = OK
 
@@ -125,15 +136,15 @@ class Validator:
         ERROR = error('    ✗ Some column names are null')
         self.column_names_not_null = OK
 
-    def check_rows_have_equal_number_of_columns(self):
-        OK = ok('   ✔ All rows have an equal number of columns')
-        ERROR = error('    ✗ Not all rows have an equal number of columns')
-        self.rows_have_equal_number_of_columns = OK
-
     def check_utf8_encoding(self):
         OK = ok('   ✔ No UTF-8 encoding errors')
         ERROR = error('    ✗ UTF-8 encodeding errors')
         self.has_utf8_encoding = OK
+
+    def check_rows_have_equal_number_of_columns(self):
+        OK = ok('   ✔ All rows have an equal number of columns')
+        ERROR = error('    ✗ Not all rows have an equal number of columns')
+        self.rows_have_equal_number_of_columns = OK
 
     def check_quotes_are_escaped(self):
         OK = ok('   ✔ Quotes are properly escaped')
