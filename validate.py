@@ -1,6 +1,7 @@
 import os
 
 import pandas as pd
+from goodtables import validate as gt_validate
 
 from rich.traceback import install
 install()
@@ -104,7 +105,7 @@ class Validator:
         self.check_column_names_unique()
         self.check_rows_unique()
         self.check_column_names_not_null()
-        self.check_utf8_encoding()
+        self.check_has_utf8_encoding()
         self.check_rows_have_equal_number_of_columns()
         self.check_quotes_are_escaped()
         self.check_line_endings_are_CRLF()
@@ -122,9 +123,10 @@ class Validator:
 
 
     def check_column_names_unique(self):
+        v = gt_validate(self.path, checks=['duplicate-header'])
         OK = ok('   ✔ Column names are unique')
         ERROR = error('   ✗ Column names are not unique')
-        self.column_names_unique = OK
+        self.column_names_unique = OK if v['valid'] else ERROR
 
     def check_rows_unique(self):
         OK = ok('   ✔ Rows are unique')
@@ -136,7 +138,7 @@ class Validator:
         ERROR = error('    ✗ Some column names are null')
         self.column_names_not_null = OK
 
-    def check_utf8_encoding(self):
+    def check_has_utf8_encoding(self):
         OK = ok('   ✔ No UTF-8 encoding errors')
         ERROR = error('    ✗ UTF-8 encodeding errors')
         self.has_utf8_encoding = OK
