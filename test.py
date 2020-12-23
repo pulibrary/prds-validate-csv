@@ -24,10 +24,19 @@ def test_can_read_tsvs():
     pass
 
 def test_check_column_names_unique():
+    validator = Validator(FIXTURE_CSV)
+    validator.check_column_names_unique()
+    assert '✔' in validator.column_names_unique
+
     validator = Validator(FIXTURE_DUPLICATE_COLUMN)
     validator.check_column_names_unique()
     assert '✗' in validator.column_names_unique
 
+def test_check_rows_unique():
     validator = Validator(FIXTURE_CSV)
-    validator.check_column_names_unique()
-    assert '✔' in validator.column_names_unique
+    validator.check_rows_unique()
+    assert '✔' in validator.rows_unique
+
+    validator = Validator(FIXTURE_DUPLICATE_ROWS)
+    validator.check_rows_unique()
+    assert '✗' in validator.rows_unique

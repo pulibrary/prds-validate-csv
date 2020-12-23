@@ -123,15 +123,16 @@ class Validator:
 
 
     def check_column_names_unique(self):
-        v = gt_validate(self.path, checks=['duplicate-header'])
         OK = ok('   ✔ Column names are unique')
         ERROR = error('   ✗ Column names are not unique')
+        v = gt_validate(self.path, checks=['duplicate-header'])
         self.column_names_unique = OK if v['valid'] else ERROR
 
     def check_rows_unique(self):
         OK = ok('   ✔ Rows are unique')
         ERROR = error('   ✗ Rows are not unique')
-        self.rows_unique = OK
+        v = gt_validate(self.path, checks=['duplicate-row'])
+        self.rows_unique = OK if v['valid'] else ERROR
 
     def check_column_names_not_null(self):
         OK = ok('   ✔ No column names are null')
