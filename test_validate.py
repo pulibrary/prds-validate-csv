@@ -17,11 +17,11 @@ def test_wrong_files():
 
 def test_can_read_csvs():
     """Can ingest CSVs"""
-    Validator(FIXTURE_CSV)
+    Validator(FIXTURE_CSV).validate()
 
 def test_can_read_tsvs():
     """Can ingest TSVs"""
-    Validator(FIXTURE_TSV)
+    Validator(FIXTURE_TSV).validate()
 
 def test_check_column_names_unique():
     validator = Validator(FIXTURE_CSV)
