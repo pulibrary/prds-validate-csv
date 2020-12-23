@@ -142,8 +142,10 @@ class Validator:
 
     def check_has_utf8_encoding(self):
         OK = ok('   ✔ No UTF-8 encoding errors')
-        ERROR = error('    ✗ UTF-8 encodeding errors')
-        self.has_utf8_encoding = OK
+        ERROR = error('    ✗ UTF-8 encoding errors')
+        v = gt_validate(self.path)
+        encoding = v['tables'][0]['encoding']
+        self.has_utf8_encoding = OK if encoding in ['utf-8', 'no'] else ERROR
 
     def check_rows_have_equal_number_of_columns(self):
         OK = ok('   ✔ All rows have an equal number of columns')

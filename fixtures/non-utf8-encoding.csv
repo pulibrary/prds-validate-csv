@@ -1,0 +1,21 @@
+Name,Gender,Time Zone,Q 1,Q 2,Q 3,Q 4,Q 5
+Cameron Rodriguez,Female,EST,Strongly disagree,Agree,Not familiar at all,"Monday, Wednesday, Friday",
+Casey Davis,Male,EDT,Strongly agree,Agree,A little familiar,"Tuesday, Thursday",MA
+Sydney Williams,Non-binary,ET,Neither agree nor disagree,Disagree,Somewhat familiar,Thursday,MS
+Taylor Jones,Female,Eastern time,Neither agree nor disagree,Strongly Agree,Familiar,"Monday, Wednesday",BSci
+Blake Brown,Female,Eastern (NYC),Somewhat agree,Neutral,,"Monday, Tuesday, Wednesday, Thursday",AB (Literature and Spanish)
+Alex Miller,Male,Pacific Time,Strongly agree,Strongly Disagree,Very familiar,"Thursday, Friday",Bachelors
+Fran Garcia,Male,GMT-5,Strongly disagree,Strongly Disagree,A little familiar,"Tuesday, Thursday, Friday",Diploma
+Jordan Smith,Female,CDT,Somewhat agree,Neutral,A little familiar,Friday,MD
+Lindsey Wilson,Female,PST,Somewhat disagree,Agree,Familiar,Friday,M.Ed.
+Pat Miller,Male,Central Europe (5 hours ahead of ET),Somewhat agree,Strongly Agree,Not familiar at all,"Monday, Wednesday",B.A.
+Casey R. Davis,Female,Central,Somewhat agree,Agree,Familiar,"Monday, Tuesday, Wednesday, Thursday, Friday",B.S.
+Pat Smith,Male,US Mountain Time Zone,Neither agree nor disagree,Strongly Agree,Not familiar at all,Tuesday,Associates
+Jordan Johnson,Other,Mountain (Canada),Strongly agree,Neutral,A little familiar,"Wednesday, Thursday, Friday",High School
+Cameron Brown,Female,CST,Strongly agree,,,,Doctorate
+Alex Garcia,Male,CST,Strongly disagree,Neutral,Very familiar,"Thursday, Friday",
+Pat Johnson,Female,ET,Somewhat agree,Neutral,A little familiar,Friday,Master of Arts in Teaching
+Lindsey Williams,Female,GMT+8,,Agree,Very familiar,Wednesday,HS Diploma
+Sydney Davis,Female,China,Strongly agree,Strongly Disagree,A little familiar,"Monday, Thursday, Friday",B.S. Finance
+Blake Davis,Female,UTC-8,Strongly agree,,Familiar,"Tuesday, Wednesday, Thursday",Some college (no degree)
+Lindsey Wilson II,Male,Pacific Standart Time,Neither agree nor disagree,Strongly Disagree,Not familiar at all,"Monday, Tuesday",GED
