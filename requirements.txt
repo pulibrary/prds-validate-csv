@@ -1,3 +1,5 @@
 pandas
 rich
 click
+pytest
+goodtables
