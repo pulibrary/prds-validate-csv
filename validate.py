@@ -52,6 +52,11 @@ class Validator:
             self.delimiter = delimiter
         else:
             self.delimiter = '\t' if filetype == 'tsv' else ','
+
+        with open(self.path) as f:
+            lines = f.readlines()
+            self.nrows = len(lines)
+            self.ncolumns = len(lines[0].split(self.delimiter))
     
     def print(self):
         console = Console()
@@ -62,28 +67,31 @@ class Validator:
         console.print()
         console.print('FILE INFO', style="green bold")
         console.print(f'   File size: {sizeof_fmt(self.bite_size)}', style="green")
-        console.print(f'   Rows: {df.shape[0]},  Columns: {df.shape[1]}', style="green")
+        console.print(f'   Rows: {self.nrows},  Columns: {self.ncolumns}', style="green")
         
         # print columns info
         console.print()
         console.print('COLUMN INFO', style="green bold")
-        table = Table()
+        if df is not None:
+            table = Table()
 
-        table.add_column("Name", style="cyan", no_wrap=True)
-        table.add_column("Data Type", style="magenta")
-        table.add_column("Is Unique", justify="center", style="green")
-        table.add_column("Empty Cell Count", style="green")
+            table.add_column("Name", style="cyan", no_wrap=True)
+            table.add_column("Data Type", style="magenta")
+            table.add_column("Is Unique", justify="center", style="green")
+            table.add_column("Empty Cell Count", style="green")
 
-        for col, dtype in df.dtypes.iteritems():
-            empty_count = df[col].isnull().sum()
-            table.add_row(
-                col, # column name
-                clean_dtypes(dtype), # data type, turned into human-readable format
-                ok('✔') if df[col].is_unique else error('✗'),
-                ok(empty_count) if empty_count == 0 else warning(empty_count)
-            )
-        
-        console.print(table)
+            for col, dtype in df.dtypes.iteritems():
+                empty_count = df[col].isnull().sum()
+                table.add_row(
+                    col, # column name
+                    clean_dtypes(dtype), # data type, turned into human-readable format
+                    ok('✔') if df[col].is_unique else error('✗'),
+                    ok(empty_count) if empty_count == 0 else warning(empty_count)
+                )
+            
+            console.print(table)
+        else:
+            console.print("  Couldn't be parsed by pandas.", style='red')
 
         # go through validation tests
         console.print()
@@ -94,8 +102,8 @@ class Validator:
         console.print(self.column_names_not_null)
         console.print(self.rows_have_equal_number_of_columns)
         console.print(self.has_utf8_encoding)
-        console.print(self.quotes_are_escaped)
-        console.print(self.line_endings_are_CRLF)
+        # console.print(self.quotes_are_escaped)
+        # console.print(self.line_endings_are_CRLF)
 
         console.print()
 
