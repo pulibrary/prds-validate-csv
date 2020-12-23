@@ -8,6 +8,7 @@ FIXTURE_DUPLICATE_COLUMN = 'fixtures/propublica-duplicate-column-name.csv'
 FIXTURE_DUPLICATE_ROWS = 'fixtures/propublica-duplicate-rows.csv'
 FIXTURE_NULL_COLUMN_NAME = 'fixtures/propublica-null-column-name.csv'
 FIXTURE_NON_UTF8 = 'fixtures/non-utf8-encoding.csv'
+FIXTURE_INCONSISTENT_ROWS = 'fixtures/propublica-inconsistent-row-length.csv'
 
 def test_wrong_files():
     """Throws an error if the wrong file is being validated"""
@@ -64,3 +65,12 @@ def test_check_has_utf8_encoding():
     validator.check_has_utf8_encoding()
     # assert '✗' in validator.has_utf8_encoding
     # TODO: Figure out utf8 encoding
+
+def test_check_rows_have_equal_number_of_columns():
+    validator = Validator(FIXTURE_CSV)
+    validator.check_rows_have_equal_number_of_columns()
+    assert '✔' in validator.rows_have_equal_number_of_columns
+
+    validator = Validator(FIXTURE_INCONSISTENT_ROWS)
+    validator.check_rows_have_equal_number_of_columns()
+    assert '✗' in validator.rows_have_equal_number_of_columns

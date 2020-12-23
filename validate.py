@@ -150,7 +150,8 @@ class Validator:
     def check_rows_have_equal_number_of_columns(self):
         OK = ok('   ✔ All rows have an equal number of columns')
         ERROR = error('    ✗ Not all rows have an equal number of columns')
-        self.rows_have_equal_number_of_columns = OK
+        v = gt_validate(self.path, checks=['extra-value', 'missing-value'])
+        self.rows_have_equal_number_of_columns = OK if v['valid'] else ERROR
 
     def check_quotes_are_escaped(self):
         OK = ok('   ✔ Quotes are properly escaped')
