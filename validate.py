@@ -94,7 +94,7 @@ class Validator:
         console.print(self.rows_unique)
         console.print(self.column_names_not_null)
         console.print(self.rows_have_equal_number_of_columns)
-        console.print(self.rows_have_equal_number_of_columns)
+        console.print(self.has_utf8_encoding)
         console.print(self.quotes_are_escaped)
         console.print(self.line_endings_are_CRLF)
 
@@ -131,8 +131,8 @@ class Validator:
         self.rows_have_equal_number_of_columns = OK
 
     def check_utf8_encoding(self):
-        OK = ok('   ✔ Machine learning scan suggests UTF-8 encoding')
-        ERROR = error('    ✗ Machine learning scan suggests it may not be UTF-8 encoded')
+        OK = ok('   ✔ No UTF-8 encoding errors')
+        ERROR = error('    ✗ UTF-8 encodeding errors')
         self.has_utf8_encoding = OK
 
     def check_quotes_are_escaped(self):
